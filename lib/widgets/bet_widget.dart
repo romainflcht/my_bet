@@ -91,7 +91,7 @@ class _BetWidgetState extends State<BetWidget>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.bet.title,
+                '(${widget.bet.id}) ${widget.bet.title}',
                 style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: AppColors.text),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

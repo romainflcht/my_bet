@@ -1,7 +1,11 @@
 import 'package:esme2526/constants/ui.dart';
 import 'package:esme2526/datas/user_bet_repository_hive.dart';
 import 'package:esme2526/models/user_bet.dart';
+import 'package:esme2526/models/bet.dart';
 import 'package:flutter/material.dart';
+
+import 'package:hive_ce/hive.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class UserBetsPage extends StatelessWidget {
   const UserBetsPage({super.key});
@@ -36,16 +40,30 @@ class UserBetsPage extends StatelessWidget {
 
           return ListView.builder(
             itemCount: userBets.length,
-            itemBuilder: (context, index) {
+            itemBuilder: (context, index) 
+            {
               final userBet = userBets[index];
+              final betBox = Hive.box<Bet>('bets');
+              final associatedBet = betBox.get(userBet.betId);
+
+              final String betTitle = associatedBet?.title ?? 'Unknown Bet';
+              final String betDesc = associatedBet?.description ?? 'Unknown Bet';
+
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: ListTile(
                   contentPadding: const EdgeInsets.all(16),
-                  title: Text('Bet ID: ${userBet.betId}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  title: Text(
+                    betTitle, 
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold, 
+                      fontSize: 16
+                    )
+                  ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(betDesc),
                       const SizedBox(height: 8),
                       Text('Amount: ${userBet.amount}€'),
                       Text('Odds: ${userBet.odds}'),

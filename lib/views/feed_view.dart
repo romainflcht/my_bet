@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage>
           IconButton(
             onPressed: () 
             {
+              // NFC. 
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const NFCReaderScreen()),
