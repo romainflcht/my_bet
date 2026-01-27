@@ -11,7 +11,10 @@ class UserBetsPage extends StatelessWidget {
     final userBetRepository = UserBetRepositoryHive();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Bets'), backgroundColor: AppColors.ui),
+      appBar: AppBar(
+        title: const Text('My Bets'), 
+        backgroundColor: AppColors.ui
+      ),
       body: StreamBuilder<List<UserBet>>(
         stream: userBetRepository.getUserBetsStream(),
         builder: (context, snapshot) {
@@ -44,9 +47,9 @@ class UserBetsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 8),
-                      Text('Amount: ${userBet.amount}'),
+                      Text('Amount: ${userBet.amount}€'),
                       Text('Odds: ${userBet.odds}'),
-                      Text('Potential Payout: ${userBet.payout.toStringAsFixed(2)}'),
+                      Text('Potential Gain: ${userBet.payout.toStringAsFixed(2)}€'),
                       const SizedBox(height: 4),
                       Text('Created: ${_formatDateTime(userBet.createdAt)}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
                     ],
@@ -67,6 +70,6 @@ class UserBetsPage extends StatelessWidget {
     final day = dateTime.day.toString().padLeft(2, '0');
     final hour = dateTime.hour.toString().padLeft(2, '0');
     final minute = dateTime.minute.toString().padLeft(2, '0');
-    return '$year-$month-$day $hour:$minute';
+    return '$year/$month/$day at $hour:$minute';
   }
 }

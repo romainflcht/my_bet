@@ -5,14 +5,13 @@ import 'package:esme2526/domain/bet_use_case.dart';
 import 'package:esme2526/domain/user_use_case.dart';
 import 'package:esme2526/models/bet.dart';
 import 'package:esme2526/models/user.dart';
-import 'package:esme2526/views/feed_page.dart';
-import 'package:esme2526/views/profile_widget.dart';
-import 'package:esme2526/views/user_bets_page.dart';
+import 'package:esme2526/views/feed_view.dart';
+import 'package:esme2526/widgets/profile_widget.dart';
+import 'package:esme2526/views/bets_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:esme2526/widgets/navbar_widget.dart';
 import 'package:esme2526/datas/notifiers.dart';
-import 'package:flutter/cupertino.dart';
 
 class TreePage extends StatefulWidget 
 {
@@ -46,14 +45,16 @@ class _TreePageState extends State<TreePage>
         final user = snapshot.data!;
 
         // Waiting for the database response.  
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting) 
+        {
           return Scaffold(
             body: const Center(child: CircularProgressIndicator()),
           );
         }
 
         // Database request failed. 
-        if (snapshot.hasError) {
+        if (snapshot.hasError) 
+        {
           return Scaffold(
             body: Center(child: Text('Error: ${snapshot.error}')),
           );
@@ -61,7 +62,6 @@ class _TreePageState extends State<TreePage>
 
         // Database request succeded. 
         return Scaffold(
-          appBar: AppBar(title: Text('Feed'), actions: [IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.badge_plus_radiowaves_right))],),
           body: _getBody(user),
           floatingActionButton: FloatingActionButton(
             onPressed: () async {

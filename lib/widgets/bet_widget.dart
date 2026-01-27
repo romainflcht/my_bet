@@ -1,10 +1,11 @@
 import 'package:esme2526/models/bet.dart';
-import 'package:esme2526/views/bet_page.dart';
+import 'package:esme2526/views/place_bet_view.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import 'package:esme2526/constants/ui.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:esme2526/utils/utils.dart';
 
 
 class BetWidget extends StatefulWidget 
@@ -126,7 +127,7 @@ class _BetWidgetState extends State<BetWidget>
                       borderRadius: BorderRadius.circular(8.0)
                     ),
                     child: Text(
-                      _formatDateTime(widget.bet.startTime),
+                      formatDateTime(widget.bet.startTime),
                       style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.text),
                     ),
                   ),
@@ -154,19 +155,14 @@ class _BetWidgetState extends State<BetWidget>
                     onPressed: () => setState(() {
                         betIsFavorite = !betIsFavorite; 
                       }), 
-                  ),
-                ],
-              ),
-            ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
-  String _formatDateTime(DateTime dateTime) 
-  {
-    return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+        ],
+      ),
+    );
   }
 }
