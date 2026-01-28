@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_manager/nfc_manager_android.dart';
 
 
 class NFCReaderScreen extends StatefulWidget 
@@ -25,11 +26,33 @@ class _NFCReaderScreenState extends State<NFCReaderScreen>
 
       return;
     }
-    NfcManager.instance.startSession(pollingOptions: {NfcPollingOption.iso14443}, onDiscovered: (NfcTag tag) async {
-      setState(() {
-        nfcData = tag.toString();
-      });
+    NfcManager.instance.startSession(
+      pollingOptions: {
+      NfcPollingOption.iso14443, 
+      NfcPollingOption.iso15693, 
+      NfcPollingOption.iso18092
+    }, 
+    
+    onDiscovered: (NfcTag tag) async 
+    {
+      NfcAAndroid? nfc = NfcAAndroid.from(tag);
+
+      if (nfc == null) 
+      {
+        setState(() {
+          nfcData = "NFC tag not in the correct format.";
+        });
       
+        await NfcManager.instance.stopSession();        
+        return; 
+      }
+
+      List<int> idBytes = nfc.tag.id;
+
+
+      setState(() {
+        nfcData = idBytes.toString();
+      });
       await NfcManager.instance.stopSession();
     });
   }

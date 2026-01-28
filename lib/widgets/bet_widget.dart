@@ -33,10 +33,13 @@ class _BetWidgetState extends State<BetWidget>
 
 
     controller = YoutubePlayerController.fromVideoId(
+      autoPlay: true,
       videoId: videoId,
       params: const YoutubePlayerParams(
+
         showControls: false,
         showFullscreenButton: false,
+        enableCaption: false,
         mute: true,
         loop: true,
         origin: 'https://www.youtube-nocookie.com',
@@ -55,7 +58,7 @@ class _BetWidgetState extends State<BetWidget>
   Widget build(BuildContext context) 
   {
     return Container(
-    margin: const EdgeInsets.all(10.0), 
+    margin: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0), 
     decoration: BoxDecoration(
       color: AppColors.ui,
       borderRadius: BorderRadius.circular(25.0),
@@ -78,89 +81,98 @@ class _BetWidgetState extends State<BetWidget>
             topRight: Radius.circular(25.0)
           ),
           child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: YoutubePlayer(controller: controller),
+            aspectRatio: 21 / 9,
+            child: Stack(fit: StackFit.expand, children: [
+              YoutubePlayer(controller: controller), 
+              Container(
+                color: Colors.transparent,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ]),
           ),
         ),
 
 
-        Padding(
-          padding: const EdgeInsets.all(16.0), 
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '(${widget.bet.id}) ${widget.bet.title}',
-                style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: AppColors.text),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                widget.bet.description,
-                style: const TextStyle(fontSize: 14.0, color: AppColors.descText),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              
-              const SizedBox(height: 16), 
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFF781F),
-                      borderRadius: BorderRadius.circular(8.0),
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0), 
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '(${widget.bet.id}) ${widget.bet.title}',
+                  style: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: AppColors.text),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.bet.description,
+                  style: const TextStyle(fontSize: 11.0, color: AppColors.descText),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                
+                const SizedBox(height: 16), 
+          
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFF781F),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Text(
+                        widget.bet.odds.toStringAsFixed(2),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
                     ),
-                    child: Text(
-                      widget.bet.odds.toStringAsFixed(2),
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF00B5FF), 
-                      borderRadius: BorderRadius.circular(8.0)
-                    ),
-                    child: Text(
-                      formatDateTime(widget.bet.startTime),
-                      style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.text),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 10),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: FilledButton(
-                      onPressed: () 
-                      {
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => BetPage(bet: widget.bet, textEditingController: TextEditingController()),
-                          ),
-                        ); 
-                      },
-                      child: const Text("Place bet"),
-                    ),
-                  ),
-                  IconButton(
-                    icon: betIsFavorite ? Icon(CupertinoIcons.heart_solid, color: AppColors.liked) : Icon(CupertinoIcons.heart),
-                    onPressed: () => setState(() {
-                        betIsFavorite = !betIsFavorite; 
-                      }), 
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF00B5FF), 
+                        borderRadius: BorderRadius.circular(8.0)
+                      ),
+                      child: Text(
+                        formatDateTime(widget.bet.startTime),
+                        style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.text),
+                      ),
                     ),
                   ],
                 ),
-              ],
+          
+                const SizedBox(height: 10),
+          
+                Row(
+                  children: [
+                    Expanded(
+                      child: FilledButton(
+                        onPressed: () 
+                        {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => BetPage(bet: widget.bet, textEditingController: TextEditingController()),
+                            ),
+                          ); 
+                        },
+                        child: const Text("Place bet"),
+                      ),
+                    ),
+                    IconButton(
+                      icon: betIsFavorite ? Icon(CupertinoIcons.heart_solid, color: AppColors.liked) : Icon(CupertinoIcons.heart),
+                      onPressed: () => setState(() {
+                          betIsFavorite = !betIsFavorite; 
+                        }), 
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
+        ),
         ],
       ),
     );

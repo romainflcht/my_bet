@@ -1,13 +1,8 @@
-import 'dart:math';
-
-import 'package:esme2526/datas/bet_repository_hive.dart';
-import 'package:esme2526/domain/bet_use_case.dart';
 import 'package:esme2526/domain/user_use_case.dart';
-import 'package:esme2526/models/bet.dart';
 import 'package:esme2526/models/user.dart';
 import 'package:esme2526/views/feed_view.dart';
-import 'package:esme2526/widgets/profile_widget.dart';
-import 'package:esme2526/views/bets_view.dart';
+import 'package:esme2526/views/profile_view.dart';
+import 'package:esme2526/views/placed_bets_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:esme2526/widgets/navbar_widget.dart';
@@ -63,15 +58,6 @@ class _TreePageState extends State<TreePage>
         // Database request succeded. 
         return Scaffold(
           body: _getBody(user),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              List<Bet> bets = await BetUseCase().getBets();
-              Bet randomBet = bets[Random().nextInt(bets.length)];
-
-              BetRepositoryHive().saveBets([randomBet]);
-            },
-            child: Icon(Icons.add),
-          ),
           bottomNavigationBar: NavbarWidget(), 
         );
       },
@@ -90,9 +76,9 @@ class _TreePageState extends State<TreePage>
               case 0:
                 return HomePage();
               case 1:
-                return UserBetsPage();
+                return PlacedBetsPage();
               case 2:
-                return ProfileWidget(user: user);
+                return ProfilePage(user: user);
               default:
                 return const Center(child: Text('Home'));
             }

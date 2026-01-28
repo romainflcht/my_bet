@@ -3,6 +3,12 @@ import 'package:esme2526/models/bet.dart';
 import 'package:esme2526/widgets/bet_widget.dart';
 import 'package:flutter/material.dart';
 
+import 'package:esme2526/domain/bet_use_case.dart';
+import 'package:esme2526/domain/user_use_case.dart';
+import 'package:esme2526/models/user.dart';
+import 'dart:math';
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:esme2526/constants/ui.dart';
 import 'package:esme2526/views/nfc_view.dart';
@@ -17,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> 
 {
+
   @override
   Widget build(BuildContext context) 
   {
@@ -25,6 +32,15 @@ class _HomePageState extends State<HomePage>
         title: Text('Feed'), 
         backgroundColor: AppColors.ui, 
         actions: [
+          IconButton(
+            onPressed: () async {
+              List<Bet> bets = await BetUseCase().getBets();
+              Bet randomBet = bets[Random().nextInt(bets.length)];
+
+              BetRepositoryHive().saveBets([randomBet]);
+            },
+            icon: Icon(CupertinoIcons.add)
+          ),
           IconButton(
             onPressed: () 
             {
