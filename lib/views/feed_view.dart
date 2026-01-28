@@ -4,8 +4,6 @@ import 'package:esme2526/widgets/bet_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:esme2526/domain/bet_use_case.dart';
-import 'package:esme2526/domain/user_use_case.dart';
-import 'package:esme2526/models/user.dart';
 import 'dart:math';
 
 

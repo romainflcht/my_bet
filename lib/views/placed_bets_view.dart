@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:esme2526/utils/utils.dart';
+import 'package:esme2526/views/placed_bet_detail_view.dart';
 
 class PlacedBetsPage extends StatelessWidget {
   const PlacedBetsPage({super.key});
@@ -23,11 +24,13 @@ class PlacedBetsPage extends StatelessWidget {
       body: StreamBuilder<List<UserBet>>(
         stream: userBetRepository.getUserBetsStream(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting)
+          {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasError) {
+          if (snapshot.hasError)
+          {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
@@ -35,7 +38,7 @@ class PlacedBetsPage extends StatelessWidget {
 
           if (userBets.isEmpty) {
             return const Center(
-              child: Text('No bets yet', style: TextStyle(fontSize: 18, color: Colors.grey)),
+              child: Text('No bets yet', style: TextStyle(fontSize: 18, color: AppColors.descText)),
             );
           }
 
@@ -50,85 +53,49 @@ class PlacedBetsPage extends StatelessWidget {
               final String betTitle = associatedBet?.title ?? 'Unknown Bet';
               final String betDesc = associatedBet?.description ?? 'Unknown Bet';
 
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(16),
-                  title: Text(
-                    betTitle, 
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold, 
-                      fontSize: 16
-                    )
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 5.0),
-                        child: Text(
-                          betDesc, 
-                          style: TextStyle(
-                            color: AppColors.descText
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PlacedBetDetailPage(userBet: userBet)));
+                },
+                child: Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    title: Text(
+                      betTitle, 
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold, 
+                        fontSize: 16
+                      )
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 5.0),
+                          child: Text(
+                            betDesc, 
+                            style: TextStyle(
+                              color: AppColors.descText
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 5.0),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFF781F),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Text(
-                          'Odds: ${userBet.odds.toStringAsFixed(2)}',
-                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 5.0),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: AppColors.accent,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Text(
-                          'Amount placed: ${userBet.amount.toStringAsFixed(2)}\$',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold, 
-                            color: AppColors.invertText),
-                        ),
-                      ), 
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 5.0),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFE606),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Text(
-                          'Potential gain: +${userBet.payout.toStringAsFixed(2)}\$',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold, 
-                            color: AppColors.invertText,
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 5.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF00B5FF), 
+                            borderRadius: BorderRadius.circular(8.0)
+                          ),
+                          child: Text(
+                            'Placed at ${formatDateTime(userBet.createdAt)}',
+                            style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.text),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 5.0),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Color(0xFF00B5FF), 
-                          borderRadius: BorderRadius.circular(8.0)
-                        ),
-                        child: Text(
-                          'Placed at ${formatDateTime(userBet.createdAt)}',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.text),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
                   ),
-                  trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
                 ),
               );
             },

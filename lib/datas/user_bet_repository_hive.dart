@@ -47,4 +47,22 @@ class UserBetRepositoryHive implements UserBetRepositoryInterface {
     final box = await _userBetsBoxFuture;
     await box.add(userBet);
   }
+
+  @override
+  Future<void> deleteUserBet(String idToDelete) async {
+    final box = await _userBetsBoxFuture;
+
+    final keyToDelete = box.keys.firstWhere(
+      (k) {
+        final bet = box.get(k);
+        return bet?.id == idToDelete;
+      },
+      orElse: () => null,
+    );
+
+    // 3. Suppression si trouvé
+    if (keyToDelete != null) {
+      await box.delete(keyToDelete);
+    }
+  }
 }

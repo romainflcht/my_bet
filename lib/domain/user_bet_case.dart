@@ -15,4 +15,8 @@ class UserBetCase {
 
     await UserBetRepositoryHive().saveUserBet(userBet);
   }
+
+  Future<void> deleteUserBet(String id) async {
+    await UserBetRepositoryHive().deleteUserBet(id);
+  }
 }

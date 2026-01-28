@@ -65,8 +65,8 @@ class _BetWidgetState extends State<BetWidget>
       boxShadow: [
         BoxShadow(
           color: AppColors.accent, 
-          spreadRadius: 0, 
-          blurRadius: 5, 
+          spreadRadius: -1, 
+          blurRadius: 4, 
           offset: const Offset(0, 0)
         )
       ],

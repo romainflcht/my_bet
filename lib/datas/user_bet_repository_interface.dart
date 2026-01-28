@@ -7,4 +7,5 @@ abstract class UserBetRepositoryInterface {
   Future<void> saveUserBet(UserBet userBet);
   Stream<List<UserBet>> getUserBetsStream();
   Future<List<UserBet>> getUserBets();
+  Future<void> deleteUserBet(String id);
 }
